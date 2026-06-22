@@ -38,7 +38,10 @@ GET    /api/products/{id}
 POST   /api/admin/products
 PUT    /api/admin/products/{id}
 DELETE /api/admin/products/{id}
+POST   /api/admin/products/{id}/image
 ```
+
+Product image upload uses `multipart/form-data` with a `file` field. Uploaded images are served from `/uploads/products/...`.
 
 ## Authentication APIs
 
@@ -60,4 +63,33 @@ After updating the role, log in again and use the returned token:
 
 ```text
 Authorization: Bearer <accessToken>
+```
+
+## Cart APIs
+
+Cart APIs require a logged-in user.
+
+```http
+GET    /api/cart
+POST   /api/cart/items
+PUT    /api/cart/items/{itemId}
+DELETE /api/cart/items/{itemId}
+DELETE /api/cart
+```
+
+## Order APIs
+
+Order APIs require a logged-in user.
+
+```http
+POST /api/orders
+GET  /api/orders
+GET  /api/orders/{id}
+```
+
+Admin order APIs require an `ADMIN` token.
+
+```http
+GET /api/admin/orders
+PUT /api/admin/orders/{id}/status
 ```

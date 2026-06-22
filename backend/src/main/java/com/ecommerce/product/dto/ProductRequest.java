@@ -1,5 +1,6 @@
 package com.ecommerce.product.dto;
 
+import com.ecommerce.common.validator.ValidImageUrl;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -24,6 +25,9 @@ public record ProductRequest(
         @Min(value = 0, message = "Available stock cannot be negative")
         Integer availableStock,
 
-        Boolean active
+        Boolean active,
+
+        @Size(max = 500, message = "Image URL must be at most 500 characters")
+        String imageUrl
 ) {
 }

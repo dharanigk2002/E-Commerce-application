@@ -16,12 +16,19 @@ spring:
     open-in-view: false
   flyway:
     enabled: true
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
 
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
 app:
+  upload:
+    product-image-directory: ${PRODUCT_IMAGE_UPLOAD_DIR:uploads/products}
+    product-image-url-prefix: /uploads/products
   jwt:
     secret: ${JWT_SECRET:local-development-secret-key-that-is-at-least-32-bytes}
     expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}

@@ -1,0 +1,95 @@
+package com.ecommerce.order.controller;
+
+import com.ecommerce.common.exception.GlobalExceptionHandler;
+import com.ecommerce.order.dto.OrderItemResponse;
+import com.ecommerce.order.dto.OrderResponse;
+import com.ecommerce.order.entity.OrderStatus;
+import com.ecommerce.order.service.OrderService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(OrderController.class)
+@AutoConfigureMockMvc(addFilters = false)
+@Import(GlobalExceptionHandler.class)
+class OrderControllerTest {
+
+    private static final String EMAIL = "dharani@example.com";
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockitoBean
+    private OrderService orderService;
+
+    @Test
+    void createOrderShouldReturnCreatedOrder() throws Exception {
+        when(orderService.createOrder(EMAIL)).thenReturn(orderResponse());
+
+        mockMvc.perform(post("/api/orders").principal(authentication()))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.status").value("PENDING"))
+                .andExpect(jsonPath("$.totalItems").value(2))
+                .andExpect(jsonPath("$.totalAmount").value(259.98));
+    }
+
+    @Test
+    void getCurrentUserOrdersShouldReturnOrders() throws Exception {
+        when(orderService.findCurrentUserOrders(EMAIL)).thenReturn(List.of(orderResponse()));
+
+        mockMvc.perform(get("/api/orders").principal(authentication()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].items[0].productName").value("Keyboard"));
+    }
+
+    @Test
+    void getCurrentUserOrderShouldReturnOrder() throws Exception {
+        when(orderService.findCurrentUserOrderById(EMAIL, 1L)).thenReturn(orderResponse());
+
+        mockMvc.perform(get("/api/orders/{id}", 1L).principal(authentication()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.status").value("PENDING"));
+    }
+
+    private UsernamePasswordAuthenticationToken authentication() {
+        return new UsernamePasswordAuthenticationToken(EMAIL, null);
+    }
+
+    private OrderResponse orderResponse() {
+        OffsetDateTime now = OffsetDateTime.parse("2026-06-21T10:00:00+05:30");
+        return new OrderResponse(
+                1L,
+                OrderStatus.PENDING,
+                List.of(new OrderItemResponse(
+                        10L,
+                        1L,
+                        "Keyboard",
+                        new BigDecimal("129.99"),
+                        2,
+                        new BigDecimal("259.98")
+                )),
+                2,
+                new BigDecimal("259.98"),
+                now,
+                now
+        );
+    }
+}

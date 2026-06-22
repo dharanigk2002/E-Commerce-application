@@ -10,7 +10,6 @@ on:
       - "backend/**"
       - ".github/workflows/backend-tests.yml"
   schedule:
-    # Runs every day at 09:00 IST. GitHub Actions schedules use UTC.
     - cron: "30 3 * * *"
   workflow_dispatch:
 

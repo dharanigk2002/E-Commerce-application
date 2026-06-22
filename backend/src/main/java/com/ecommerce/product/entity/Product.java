@@ -35,6 +35,9 @@ public class Product {
     @Column(nullable = false)
     private Boolean active = true;
 
+    @Column(length = 500)
+    private String imageUrl;
+
     @Column(nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
@@ -100,12 +103,24 @@ public class Product {
         this.availableStock = availableStock;
     }
 
+    public void reduceStock(int quantity) {
+        this.availableStock = this.availableStock - quantity;
+    }
+
     public Boolean getActive() {
         return active;
     }
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public OffsetDateTime getCreatedAt() {

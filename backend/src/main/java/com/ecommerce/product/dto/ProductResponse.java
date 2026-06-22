@@ -10,6 +10,7 @@ public record ProductResponse(
         BigDecimal price,
         Integer availableStock,
         Boolean active,
+        String imageUrl,
         OffsetDateTime createdAt,
         OffsetDateTime updatedAt
 ) {

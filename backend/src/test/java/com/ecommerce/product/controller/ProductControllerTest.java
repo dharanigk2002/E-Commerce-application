@@ -78,6 +78,7 @@ class ProductControllerTest {
                 new BigDecimal("129.99"),
                 10,
                 true,
+                "/uploads/products/keyboard.jpg",
                 now,
                 now
         );

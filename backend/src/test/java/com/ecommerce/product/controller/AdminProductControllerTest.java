@@ -1,6 +1,7 @@
 package com.ecommerce.product.controller;
 
 import com.ecommerce.common.exception.GlobalExceptionHandler;
+import com.ecommerce.common.exception.BadRequestException;
 import com.ecommerce.common.exception.ResourceNotFoundException;
 import com.ecommerce.product.dto.ProductRequest;
 import com.ecommerce.product.dto.ProductResponse;
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -117,6 +119,28 @@ class AdminProductControllerTest {
                 .andExpect(jsonPath("$.message").value("Product not found with id: 99"));
     }
 
+    @Test
+    void uploadProductImageShouldReturnProductWithImageUrl() throws Exception {
+        when(productService.updateImage(eq(1L), any())).thenReturn(productResponse());
+
+        mockMvc.perform(multipart("/api/admin/products/{id}/image", 1L)
+                        .file("file", "image-content".getBytes()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.imageUrl").value("/uploads/products/keyboard.jpg"));
+    }
+
+    @Test
+    void uploadProductImageShouldReturnBadRequestForInvalidFile() throws Exception {
+        when(productService.updateImage(eq(1L), any()))
+                .thenThrow(new BadRequestException("Only JPEG, PNG, and WEBP images are allowed"));
+
+        mockMvc.perform(multipart("/api/admin/products/{id}/image", 1L)
+                        .file("file", "not-image".getBytes()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Only JPEG, PNG, and WEBP images are allowed"));
+    }
+
     private String validProductJson() {
         return """
                 {
@@ -124,7 +148,8 @@ class AdminProductControllerTest {
                   "description": "Mechanical keyboard",
                   "price": 129.99,
                   "availableStock": 10,
-                  "active": true
+                  "active": true,
+                  "imageUrl": "/uploads/products/keyboard.jpg"
                 }
                 """;
     }
@@ -138,6 +163,7 @@ class AdminProductControllerTest {
                 new BigDecimal("129.99"),
                 10,
                 true,
+                "/uploads/products/keyboard.jpg",
                 now,
                 now
         );
