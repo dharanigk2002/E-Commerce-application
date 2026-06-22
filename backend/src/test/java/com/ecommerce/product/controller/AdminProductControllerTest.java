@@ -127,7 +127,7 @@ class AdminProductControllerTest {
                         .file("file", "image-content".getBytes()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.imageUrl").value("/uploads/products/keyboard.jpg"));
+                .andExpect(jsonPath("$.imageUrl").value("https://res.cloudinary.com/demo/image/upload/keyboard.jpg"));
     }
 
     @Test
@@ -149,7 +149,7 @@ class AdminProductControllerTest {
                   "price": 129.99,
                   "availableStock": 10,
                   "active": true,
-                  "imageUrl": "/uploads/products/keyboard.jpg"
+                  "imageUrl": "https://res.cloudinary.com/demo/image/upload/keyboard.jpg"
                 }
                 """;
     }
@@ -163,7 +163,7 @@ class AdminProductControllerTest {
                 new BigDecimal("129.99"),
                 10,
                 true,
-                "/uploads/products/keyboard.jpg",
+                "https://res.cloudinary.com/demo/image/upload/keyboard.jpg",
                 now,
                 now
         );

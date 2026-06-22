@@ -78,7 +78,7 @@ class ProductControllerTest {
                 new BigDecimal("129.99"),
                 10,
                 true,
-                "/uploads/products/keyboard.jpg",
+                "https://res.cloudinary.com/demo/image/upload/keyboard.jpg",
                 now,
                 now
         );

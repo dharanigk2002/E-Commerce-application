@@ -41,7 +41,15 @@ DELETE /api/admin/products/{id}
 POST   /api/admin/products/{id}/image
 ```
 
-Product image upload uses `multipart/form-data` with a `file` field. Uploaded images are served from `/uploads/products/...`.
+Product image upload uses `multipart/form-data` with a `file` field. Uploaded images are stored in Cloudinary, and product responses return the Cloudinary HTTPS image URL.
+
+Required Cloudinary environment variables:
+
+```text
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+```
 
 ## Authentication APIs
 

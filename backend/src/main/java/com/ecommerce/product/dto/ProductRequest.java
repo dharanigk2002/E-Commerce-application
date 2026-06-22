@@ -1,6 +1,5 @@
 package com.ecommerce.product.dto;
 
-import com.ecommerce.common.validator.ValidImageUrl;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

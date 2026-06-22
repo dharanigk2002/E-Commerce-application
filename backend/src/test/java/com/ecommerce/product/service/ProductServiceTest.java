@@ -41,7 +41,7 @@ class ProductServiceTest {
                 new BigDecimal("129.99"),
                 10,
                 true,
-                "/uploads/products/keyboard.jpg"
+                "https://res.cloudinary.com/demo/image/upload/keyboard.jpg"
         );
         Product savedProduct = new Product(
                 request.name(),
@@ -59,7 +59,7 @@ class ProductServiceTest {
         assertThat(response.name()).isEqualTo("Keyboard");
         assertThat(response.price()).isEqualByComparingTo("129.99");
         assertThat(response.availableStock()).isEqualTo(10);
-        assertThat(response.imageUrl()).isEqualTo("/uploads/products/keyboard.jpg");
+        assertThat(response.imageUrl()).isEqualTo("https://res.cloudinary.com/demo/image/upload/keyboard.jpg");
         verify(productRepository).save(any(Product.class));
     }
 
@@ -89,12 +89,13 @@ class ProductServiceTest {
         );
 
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
-        when(fileStorageService.storeProductImage(1L, file)).thenReturn("/uploads/products/product-1.png");
+        when(fileStorageService.storeProductImage(1L, file))
+                .thenReturn("https://res.cloudinary.com/demo/image/upload/product-1.png");
 
         var response = productService.updateImage(1L, file);
 
-        assertThat(product.getImageUrl()).isEqualTo("/uploads/products/product-1.png");
-        assertThat(response.imageUrl()).isEqualTo("/uploads/products/product-1.png");
+        assertThat(product.getImageUrl()).isEqualTo("https://res.cloudinary.com/demo/image/upload/product-1.png");
+        assertThat(response.imageUrl()).isEqualTo("https://res.cloudinary.com/demo/image/upload/product-1.png");
     }
 
     @Test
