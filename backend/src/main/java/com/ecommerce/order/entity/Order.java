@@ -41,6 +41,21 @@ public class Order {
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal totalAmount = BigDecimal.ZERO;
 
+    @Column(nullable = false)
+    private String shippingAddressLine = "";
+
+    @Column(nullable = false, length = 120)
+    private String shippingCity = "";
+
+    @Column(nullable = false, length = 120)
+    private String shippingState = "";
+
+    @Column(nullable = false, length = 30)
+    private String shippingPostalCode = "";
+
+    @Column(nullable = false, length = 120)
+    private String shippingCountry = "";
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
@@ -55,6 +70,22 @@ public class Order {
 
     public Order(User user) {
         this.user = user;
+    }
+
+    public Order(
+            User user,
+            String shippingAddressLine,
+            String shippingCity,
+            String shippingState,
+            String shippingPostalCode,
+            String shippingCountry
+    ) {
+        this.user = user;
+        this.shippingAddressLine = shippingAddressLine;
+        this.shippingCity = shippingCity;
+        this.shippingState = shippingState;
+        this.shippingPostalCode = shippingPostalCode;
+        this.shippingCountry = shippingCountry;
     }
 
     @PrePersist
@@ -87,6 +118,26 @@ public class Order {
 
     public BigDecimal getTotalAmount() {
         return totalAmount;
+    }
+
+    public String getShippingAddressLine() {
+        return shippingAddressLine;
+    }
+
+    public String getShippingCity() {
+        return shippingCity;
+    }
+
+    public String getShippingState() {
+        return shippingState;
+    }
+
+    public String getShippingPostalCode() {
+        return shippingPostalCode;
+    }
+
+    public String getShippingCountry() {
+        return shippingCountry;
     }
 
     public List<OrderItem> getItems() {

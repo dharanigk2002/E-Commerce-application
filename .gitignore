@@ -7,6 +7,7 @@ out/
 
 .env
 *.log
+.npm-cache/
 
 backend/docs/schema-and-mapping-guide.md
 backend/uploads/

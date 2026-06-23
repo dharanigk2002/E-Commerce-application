@@ -5,6 +5,7 @@ import com.ecommerce.cart.entity.CartItem;
 import com.ecommerce.cart.repository.CartRepository;
 import com.ecommerce.common.exception.BadRequestException;
 import com.ecommerce.common.exception.ResourceNotFoundException;
+import com.ecommerce.order.dto.CreateOrderRequest;
 import com.ecommerce.order.dto.OrderItemResponse;
 import com.ecommerce.order.dto.OrderResponse;
 import com.ecommerce.order.dto.UpdateOrderStatusRequest;
@@ -31,7 +32,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponse createOrder(String userEmail) {
+    public OrderResponse createOrder(String userEmail, CreateOrderRequest request) {
         Cart cart = cartRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new BadRequestException("Cart is empty"));
 
@@ -39,7 +40,14 @@ public class OrderService {
             throw new BadRequestException("Cart is empty");
         }
 
-        Order order = new Order(cart.getUser());
+        Order order = new Order(
+                cart.getUser(),
+                request.shippingAddressLine(),
+                request.shippingCity(),
+                request.shippingState(),
+                request.shippingPostalCode(),
+                request.shippingCountry()
+        );
 
         for (CartItem cartItem : cart.getItems()) {
             Product product = cartItem.getProduct();
@@ -110,6 +118,13 @@ public class OrderService {
         return new OrderResponse(
                 order.getId(),
                 order.getStatus(),
+                order.getUser().getFullName(),
+                order.getUser().getEmail(),
+                order.getShippingAddressLine(),
+                order.getShippingCity(),
+                order.getShippingState(),
+                order.getShippingPostalCode(),
+                order.getShippingCountry(),
                 items,
                 totalItems,
                 order.getTotalAmount(),

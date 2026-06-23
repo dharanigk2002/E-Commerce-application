@@ -5,6 +5,7 @@ import com.ecommerce.cart.entity.CartItem;
 import com.ecommerce.cart.repository.CartRepository;
 import com.ecommerce.common.exception.BadRequestException;
 import com.ecommerce.common.exception.ResourceNotFoundException;
+import com.ecommerce.order.dto.CreateOrderRequest;
 import com.ecommerce.order.dto.UpdateOrderStatusRequest;
 import com.ecommerce.order.entity.Order;
 import com.ecommerce.order.entity.OrderStatus;
@@ -52,9 +53,16 @@ class OrderServiceTest {
         when(cartRepository.findByUserEmail(EMAIL)).thenReturn(Optional.of(cart));
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        var response = orderService.createOrder(EMAIL);
+        var response = orderService.createOrder(EMAIL, shippingAddress());
 
         assertThat(response.status()).isEqualTo(OrderStatus.PENDING);
+        assertThat(response.customerName()).isEqualTo("Dharani");
+        assertThat(response.customerEmail()).isEqualTo(EMAIL);
+        assertThat(response.shippingAddressLine()).isEqualTo("123 Main Street");
+        assertThat(response.shippingCity()).isEqualTo("Chennai");
+        assertThat(response.shippingState()).isEqualTo("Tamil Nadu");
+        assertThat(response.shippingPostalCode()).isEqualTo("600001");
+        assertThat(response.shippingCountry()).isEqualTo("India");
         assertThat(response.totalItems()).isEqualTo(2);
         assertThat(response.totalAmount()).isEqualByComparingTo("259.98");
         assertThat(response.items()).hasSize(1);
@@ -72,7 +80,7 @@ class OrderServiceTest {
 
         when(cartRepository.findByUserEmail(EMAIL)).thenReturn(Optional.of(cart));
 
-        assertThatThrownBy(() -> orderService.createOrder(EMAIL))
+        assertThatThrownBy(() -> orderService.createOrder(EMAIL, shippingAddress()))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage("Cart is empty");
 
@@ -86,7 +94,7 @@ class OrderServiceTest {
 
         when(cartRepository.findByUserEmail(EMAIL)).thenReturn(Optional.of(cart));
 
-        assertThatThrownBy(() -> orderService.createOrder(EMAIL))
+        assertThatThrownBy(() -> orderService.createOrder(EMAIL, shippingAddress()))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage("Requested quantity exceeds available stock for product: Keyboard");
 
@@ -126,8 +134,20 @@ class OrderServiceTest {
         var response = orderService.findCurrentUserOrders(EMAIL);
 
         assertThat(response).hasSize(1);
+        assertThat(response.get(0).customerName()).isEqualTo("Dharani");
+        assertThat(response.get(0).customerEmail()).isEqualTo(EMAIL);
         assertThat(response.get(0).totalItems()).isEqualTo(2);
         assertThat(response.get(0).totalAmount()).isEqualByComparingTo("259.98");
+    }
+
+    private CreateOrderRequest shippingAddress() {
+        return new CreateOrderRequest(
+                "123 Main Street",
+                "Chennai",
+                "Tamil Nadu",
+                "600001",
+                "India"
+        );
     }
 
     private Cart cartWithItem(Product product, int quantity) {

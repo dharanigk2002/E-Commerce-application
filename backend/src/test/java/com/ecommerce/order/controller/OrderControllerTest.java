@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,6 +19,8 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,14 +42,37 @@ class OrderControllerTest {
 
     @Test
     void createOrderShouldReturnCreatedOrder() throws Exception {
-        when(orderService.createOrder(EMAIL)).thenReturn(orderResponse());
+        when(orderService.createOrder(eq(EMAIL), any())).thenReturn(orderResponse());
 
-        mockMvc.perform(post("/api/orders").principal(authentication()))
+        mockMvc.perform(post("/api/orders")
+                        .principal(authentication())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(validCreateOrderJson()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.status").value("PENDING"))
+                .andExpect(jsonPath("$.customerName").value("Dharani"))
+                .andExpect(jsonPath("$.customerEmail").value(EMAIL))
+                .andExpect(jsonPath("$.shippingCity").value("Chennai"))
                 .andExpect(jsonPath("$.totalItems").value(2))
                 .andExpect(jsonPath("$.totalAmount").value(259.98));
+    }
+
+    @Test
+    void createOrderShouldRejectMissingAddressFields() throws Exception {
+        mockMvc.perform(post("/api/orders")
+                        .principal(authentication())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "shippingCity": "Chennai"
+                                }
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.validationErrors.shippingAddressLine").value("Shipping address line is required"))
+                .andExpect(jsonPath("$.validationErrors.shippingState").value("Shipping state is required"))
+                .andExpect(jsonPath("$.validationErrors.shippingPostalCode").value("Shipping postal code is required"))
+                .andExpect(jsonPath("$.validationErrors.shippingCountry").value("Shipping country is required"));
     }
 
     @Test
@@ -56,6 +82,8 @@ class OrderControllerTest {
         mockMvc.perform(get("/api/orders").principal(authentication()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].customerEmail").value(EMAIL))
+                .andExpect(jsonPath("$[0].shippingAddressLine").value("123 Main Street"))
                 .andExpect(jsonPath("$[0].items[0].productName").value("Keyboard"));
     }
 
@@ -69,6 +97,18 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.status").value("PENDING"));
     }
 
+    private String validCreateOrderJson() {
+        return """
+                {
+                  "shippingAddressLine": "123 Main Street",
+                  "shippingCity": "Chennai",
+                  "shippingState": "Tamil Nadu",
+                  "shippingPostalCode": "600001",
+                  "shippingCountry": "India"
+                }
+                """;
+    }
+
     private UsernamePasswordAuthenticationToken authentication() {
         return new UsernamePasswordAuthenticationToken(EMAIL, null);
     }
@@ -78,6 +118,13 @@ class OrderControllerTest {
         return new OrderResponse(
                 1L,
                 OrderStatus.PENDING,
+                "Dharani",
+                EMAIL,
+                "123 Main Street",
+                "Chennai",
+                "Tamil Nadu",
+                "600001",
+                "India",
                 List.of(new OrderItemResponse(
                         10L,
                         1L,

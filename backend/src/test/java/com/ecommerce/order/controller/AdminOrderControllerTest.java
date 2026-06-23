@@ -45,7 +45,11 @@ class AdminOrderControllerTest {
         mockMvc.perform(get("/api/admin/orders"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].status").value("PENDING"));
+                .andExpect(jsonPath("$[0].status").value("PENDING"))
+                .andExpect(jsonPath("$[0].customerName").value("Dharani"))
+                .andExpect(jsonPath("$[0].customerEmail").value("dharani@example.com"))
+                .andExpect(jsonPath("$[0].shippingAddressLine").value("123 Main Street"))
+                .andExpect(jsonPath("$[0].shippingCity").value("Chennai"));
     }
 
     @Test
@@ -79,6 +83,13 @@ class AdminOrderControllerTest {
         return new OrderResponse(
                 1L,
                 status,
+                "Dharani",
+                "dharani@example.com",
+                "123 Main Street",
+                "Chennai",
+                "Tamil Nadu",
+                "600001",
+                "India",
                 List.of(new OrderItemResponse(
                         10L,
                         1L,

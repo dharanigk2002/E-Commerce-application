@@ -9,6 +9,13 @@ import java.util.List;
 public record OrderResponse(
         Long id,
         OrderStatus status,
+        String customerName,
+        String customerEmail,
+        String shippingAddressLine,
+        String shippingCity,
+        String shippingState,
+        String shippingPostalCode,
+        String shippingCountry,
         List<OrderItemResponse> items,
         Integer totalItems,
         BigDecimal totalAmount,
