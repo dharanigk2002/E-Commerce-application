@@ -1,0 +1,133 @@
+.pageStack {
+  display: grid;
+  gap: 24px;
+}
+
+.pageHeader {
+  align-items: flex-start;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.pageHeader h1 {
+  color: #111b1f;
+  font-size: 32px;
+  line-height: 1.1;
+  margin: 10px 0;
+}
+
+.pageHeader p,
+.muted {
+  color: #60727c;
+}
+
+.eyebrow {
+  color: #0f766e;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin-top: 18px;
+  text-transform: uppercase;
+}
+
+.formStack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.primaryButton,
+.secondaryButton,
+.ghostButton,
+.iconButton {
+  align-items: center;
+  border: 0;
+  border-radius: 6px;
+  display: inline-flex;
+  font-weight: 800;
+  gap: 8px;
+  justify-content: center;
+  min-height: 40px;
+  padding: 10px 14px;
+}
+
+.primaryButton {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.secondaryButton {
+  background: #e4f2ef;
+  color: #0f766e;
+}
+
+.ghostButton {
+  background: transparent;
+  color: #d7e6ea;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.iconButton {
+  background: #eef3f5;
+  color: #344852;
+  height: 40px;
+  padding: 0;
+  width: 40px;
+}
+
+.danger {
+  background: #fdecec;
+  color: #b42318;
+}
+
+.errorMessage,
+.errorBanner {
+  background: #fdecec;
+  border: 1px solid #fac5c5;
+  border-radius: 6px;
+  color: #c5180f;
+  margin: 0;
+  padding: 12px 14px;
+}
+
+.panel {
+  background: #ffffff;
+  border: 1px solid #dde4e8;
+  border-radius: 8px;
+  padding: 22px;
+}
+
+.sectionHeading {
+  align-items: flex-start;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.sectionHeading h2 {
+  margin: 0 0 6px;
+}
+
+.sectionHeading p {
+  color: #60727c;
+  margin: 0;
+}
+
+.srOnly {
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}
+
+@media (max-width: 640px) {
+  .pageHeader {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

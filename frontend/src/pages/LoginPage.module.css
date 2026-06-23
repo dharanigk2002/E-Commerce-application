@@ -1,0 +1,59 @@
+.loginPage {
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(rgba(17, 27, 31, 0.72), rgba(17, 27, 31, 0.72)),
+    url("https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?auto=format&fit=crop&w=1600&q=80");
+  background-position: center;
+  background-size: cover;
+  min-height: 100vh;
+  padding: 32px;
+}
+
+.loginPanel {
+  background: #ffffff;
+  border: 1px solid #dde4e8;
+  border-radius: 8px;
+  box-shadow: 0 20px 70px rgba(5, 16, 21, 0.2);
+  max-width: 460px;
+  padding: 32px;
+  width: 100%;
+}
+
+.loginHeader {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.loginHeader span {
+  margin: 0;
+}
+
+.loginIcon {
+  align-items: center;
+  background: #0f766e;
+  border-radius: 8px;
+  color: #ffffff;
+  display: inline-flex;
+  height: 48px;
+  justify-content: center;
+  width: 48px;
+}
+
+.loginPanel h1 {
+  color: #111b1f;
+  font-size: 32px;
+  line-height: 1.1;
+  margin: 10px 0;
+}
+
+.loginPanel p {
+  color: #60727c;
+}
+
+@media (max-width: 640px) {
+  .loginPage {
+    padding: 18px;
+  }
+}

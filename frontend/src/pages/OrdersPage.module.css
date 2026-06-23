@@ -1,0 +1,93 @@
+.orderList {
+  display: grid;
+  gap: 14px;
+}
+
+.orderRow {
+  border: 1px solid #e5ecef;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.orderSummary {
+  align-items: center;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 260px) 160px 180px;
+}
+
+.orderSummary h2,
+.orderSummary p {
+  margin: 0;
+}
+
+.orderSummary p,
+.orderTotal span,
+.customerInfo span,
+.shippingAddress span {
+  color: #60727c;
+}
+
+.customerInfo span,
+.shippingAddress span {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.customerInfo strong,
+.customerInfo p,
+.shippingAddress p {
+  margin: 0;
+}
+
+.customerInfo p,
+.shippingAddress p {
+  overflow-wrap: anywhere;
+}
+
+.orderTotal strong,
+.orderTotal span {
+  display: block;
+}
+
+.shippingAddress {
+  background: #f7fafb;
+  border: 1px solid #e5ecef;
+  border-radius: 8px;
+  margin-top: 14px;
+  padding: 12px;
+}
+
+.orderItems {
+  border-top: 1px solid #e5ecef;
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+}
+
+.orderItem {
+  color: #344852;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) 150px 110px;
+}
+
+.orderItem strong {
+  text-align: right;
+}
+
+@media (max-width: 980px) {
+  .orderSummary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .orderItem {
+    grid-template-columns: 1fr;
+  }
+}

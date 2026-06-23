@@ -1,0 +1,15 @@
+.emptyState {
+  border: 1px dashed #bdcbd2;
+  border-radius: 8px;
+  padding: 32px;
+  text-align: center;
+}
+
+.emptyState h2 {
+  margin: 0 0 8px;
+}
+
+.emptyState p {
+  color: #60727c;
+  margin: 0;
+}

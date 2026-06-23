@@ -1,0 +1,110 @@
+.adminShell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: #111b1f;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 24px;
+  position: sticky;
+  max-width: 100%;
+  top: 0;
+}
+
+.brand {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.brandMark {
+  align-items: center;
+  background: #0f766e;
+  border-radius: 8px;
+  color: #ffffff;
+  display: inline-flex;
+  height: 48px;
+  justify-content: center;
+  width: 48px;
+}
+
+.brand strong {
+  display: block;
+  font-size: 20px;
+}
+
+.sidebarNav {
+  display: grid;
+  gap: 8px;
+  margin-top: 36px;
+}
+
+.sidebarNav a {
+  align-items: center;
+  border-radius: 6px;
+  color: #d7e6ea;
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  text-decoration: none;
+}
+
+.sidebarNav a:global(.active),
+.sidebarNav a:hover {
+  background: #1e3036;
+  color: #ffffff;
+}
+
+.sidebarFooter {
+  display: grid;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.userChip {
+  align-items: center;
+  background: #1e3036;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+}
+
+.userChip strong,
+.userChip span {
+  display: block;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.userChip span {
+  color: #9fb3bc;
+  font-size: 12px;
+}
+
+.adminMain {
+  padding: 32px;
+}
+
+@media (max-width: 980px) {
+  .adminShell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .adminMain {
+    padding: 18px;
+  }
+}
