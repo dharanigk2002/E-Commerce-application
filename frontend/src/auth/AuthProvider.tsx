@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const timeoutId = window.setTimeout(logout, delay);
 
     return () => window.clearTimeout(timeoutId);
-  }, [auth.expiresAt]);
+  }, [auth.expiresAt, logout]);
 
   async function login(email: string, password: string) {
     const response = await api.login(email, password);
