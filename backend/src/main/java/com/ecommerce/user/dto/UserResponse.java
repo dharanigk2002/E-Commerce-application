@@ -9,6 +9,11 @@ public record UserResponse(
         String fullName,
         String email,
         Role role,
+        String shippingAddressLine,
+        String shippingCity,
+        String shippingState,
+        String shippingPostalCode,
+        String shippingCountry,
         OffsetDateTime createdAt
 ) {
 }

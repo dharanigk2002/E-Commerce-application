@@ -72,6 +72,11 @@ public class AuthService {
                 user.getFullName(),
                 user.getEmail(),
                 user.getRole(),
+                user.getShippingAddressLine(),
+                user.getShippingCity(),
+                user.getShippingState(),
+                user.getShippingPostalCode(),
+                user.getShippingCountry(),
                 user.getCreatedAt()
         );
     }

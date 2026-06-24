@@ -1,6 +1,10 @@
 package com.ecommerce.user.entity;
 
+import com.ecommerce.common.model.Address;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -28,6 +32,16 @@ public class User {
 
     @Column(nullable = false)
     private String passwordHash;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "addressLine", column = @Column(name = "shipping_address_line")),
+            @AttributeOverride(name = "city", column = @Column(name = "shipping_city", length = 120)),
+            @AttributeOverride(name = "state", column = @Column(name = "shipping_state", length = 120)),
+            @AttributeOverride(name = "postalCode", column = @Column(name = "shipping_postal_code", length = 30)),
+            @AttributeOverride(name = "country", column = @Column(name = "shipping_country", length = 120))
+    })
+    private Address shippingAddress;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
@@ -75,6 +89,50 @@ public class User {
 
     public String getPasswordHash() {
         return passwordHash;
+    }
+
+    public String getShippingAddressLine() {
+        return shippingAddress == null ? null : shippingAddress.getAddressLine();
+    }
+
+    public String getShippingCity() {
+        return shippingAddress == null ? null : shippingAddress.getCity();
+    }
+
+    public String getShippingState() {
+        return shippingAddress == null ? null : shippingAddress.getState();
+    }
+
+    public String getShippingPostalCode() {
+        return shippingAddress == null ? null : shippingAddress.getPostalCode();
+    }
+
+    public String getShippingCountry() {
+        return shippingAddress == null ? null : shippingAddress.getCountry();
+    }
+
+    public Address getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void updateShippingAddress(
+            String shippingAddressLine,
+            String shippingCity,
+            String shippingState,
+            String shippingPostalCode,
+            String shippingCountry
+    ) {
+        this.shippingAddress = new Address(
+                shippingAddressLine,
+                shippingCity,
+                shippingState,
+                shippingPostalCode,
+                shippingCountry
+        );
+    }
+
+    public boolean hasShippingAddress() {
+        return shippingAddress != null && shippingAddress.isComplete();
     }
 
     public Role getRole() {

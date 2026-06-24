@@ -139,6 +139,11 @@ class AuthControllerTest {
                         "Dharani",
                         "dharani@example.com",
                         Role.CUSTOMER,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
                         OffsetDateTime.parse("2026-06-19T10:00:00+05:30")
                 )
         );

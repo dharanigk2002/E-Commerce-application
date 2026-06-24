@@ -1,9 +1,9 @@
-package com.ecommerce.order.dto;
+package com.ecommerce.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record CreateOrderRequest(
+public record UpdateAddressRequest(
         @NotBlank(message = "Shipping address line is required")
         @Size(max = 255, message = "Shipping address line must be at most 255 characters")
         String shippingAddressLine,

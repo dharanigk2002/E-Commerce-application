@@ -1,8 +1,12 @@
 package com.ecommerce.order.entity;
 
+import com.ecommerce.common.model.Address;
 import com.ecommerce.user.entity.User;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -41,20 +45,15 @@ public class Order {
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal totalAmount = BigDecimal.ZERO;
 
-    @Column(nullable = false)
-    private String shippingAddressLine = "";
-
-    @Column(nullable = false, length = 120)
-    private String shippingCity = "";
-
-    @Column(nullable = false, length = 120)
-    private String shippingState = "";
-
-    @Column(nullable = false, length = 30)
-    private String shippingPostalCode = "";
-
-    @Column(nullable = false, length = 120)
-    private String shippingCountry = "";
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "addressLine", column = @Column(name = "shipping_address_line", nullable = false, length = 255)),
+            @AttributeOverride(name = "city", column = @Column(name = "shipping_city", nullable = false, length = 120)),
+            @AttributeOverride(name = "state", column = @Column(name = "shipping_state", nullable = false, length = 120)),
+            @AttributeOverride(name = "postalCode", column = @Column(name = "shipping_postal_code", nullable = false, length = 30)),
+            @AttributeOverride(name = "country", column = @Column(name = "shipping_country", nullable = false, length = 120))
+    })
+    private Address shippingAddress = new Address("", "", "", "", "");
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
@@ -72,20 +71,9 @@ public class Order {
         this.user = user;
     }
 
-    public Order(
-            User user,
-            String shippingAddressLine,
-            String shippingCity,
-            String shippingState,
-            String shippingPostalCode,
-            String shippingCountry
-    ) {
+    public Order(User user, Address shippingAddress) {
         this.user = user;
-        this.shippingAddressLine = shippingAddressLine;
-        this.shippingCity = shippingCity;
-        this.shippingState = shippingState;
-        this.shippingPostalCode = shippingPostalCode;
-        this.shippingCountry = shippingCountry;
+        this.shippingAddress = Address.copyOf(shippingAddress);
     }
 
     @PrePersist
@@ -121,23 +109,23 @@ public class Order {
     }
 
     public String getShippingAddressLine() {
-        return shippingAddressLine;
+        return shippingAddress.getAddressLine();
     }
 
     public String getShippingCity() {
-        return shippingCity;
+        return shippingAddress.getCity();
     }
 
     public String getShippingState() {
-        return shippingState;
+        return shippingAddress.getState();
     }
 
     public String getShippingPostalCode() {
-        return shippingPostalCode;
+        return shippingAddress.getPostalCode();
     }
 
     public String getShippingCountry() {
-        return shippingCountry;
+        return shippingAddress.getCountry();
     }
 
     public List<OrderItem> getItems() {
