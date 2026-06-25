@@ -27,30 +27,26 @@ export function OrdersPage() {
     if (!token) {
       return;
     }
-
-    let ignore = false;
-
+    const controller = new AbortController();
     api
-      .getAdminOrders(token)
-      .then((loadedOrders) => {
-        if (!ignore) {
-          setOrders(loadedOrders);
-        }
-      })
+      .getAdminOrders(token, controller.signal)
+      .then((loadedOrders) => setOrders(loadedOrders))
       .catch((exception) => {
-        if (!ignore) {
-          setError(readError(exception, "Could not load orders"));
+        if (
+          exception instanceof DOMException &&
+          exception.name === "AbortError"
+        ) {
+          return;
         }
+        setError(readError(exception, "Could not load orders"));
       })
       .finally(() => {
-        if (!ignore) {
+        if (!controller.signal.aborted) {
           setLoading(false);
         }
       });
 
-    return () => {
-      ignore = true;
-    };
+    return () => controller.abort();
   }, [token]);
 
   async function loadOrders() {
@@ -141,7 +137,7 @@ export function OrdersPage() {
                   <label>
                     Status
                     <select
-                      defaultValue={order.status}
+                      value={order.status}
                       disabled={updatingId === order.id}
                       onChange={(event) =>
                         void handleStatusChange(

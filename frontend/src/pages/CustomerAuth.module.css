@@ -1,0 +1,48 @@
+.authPanel {
+  background: #ffffff;
+  border: 1px solid #dde4e8;
+  border-radius: 8px;
+  margin: 44px auto;
+  max-width: 520px;
+  padding: 28px;
+}
+
+.authHeader {
+  align-items: flex-start;
+  display: flex;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.authHeader > svg {
+  background: #e4f2ef;
+  border-radius: 8px;
+  color: #0f766e;
+  flex: 0 0 auto;
+  padding: 10px;
+  box-sizing: content-box;
+}
+
+.authHeader h1,
+.authHeader p,
+.authLink {
+  margin: 0;
+}
+
+.authHeader h1 {
+  font-size: 30px;
+}
+
+.authHeader p,
+.authLink {
+  color: #60727c;
+}
+
+.authLink {
+  margin-top: 18px;
+}
+
+.authLink a {
+  color: #0f766e;
+  font-weight: 800;
+}

@@ -6,14 +6,18 @@ import common from "../styles/common.module.css";
 import styles from "./LoginPage.module.css";
 
 export function LoginPage() {
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, user } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  if (isAuthenticated) {
+  if (isAuthenticated && user?.role === "ADMIN") {
     return <Navigate to="/admin/products" replace />;
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/" replace />;
   }
 
   async function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
@@ -22,7 +26,10 @@ export function LoginPage() {
     setSubmitting(true);
 
     try {
-      await login(email, password);
+      await login(email, password, {
+        requiredRole: "ADMIN",
+        roleErrorMessage: "Only ADMIN users can access this dashboard",
+      });
     } catch (exception) {
       setError(
         exception instanceof Error ? exception.message : "Could not login",

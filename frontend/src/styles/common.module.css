@@ -84,13 +84,20 @@
 }
 
 .errorMessage,
-.errorBanner {
+.errorBanner,
+.successMessage {
   background: #fdecec;
   border: 1px solid #fac5c5;
   border-radius: 6px;
   color: #c5180f;
   margin: 0;
   padding: 12px 14px;
+}
+
+.successMessage {
+  background: #e7f8ef;
+  border-color: #b9ebcf;
+  color: #047857;
 }
 
 .panel {

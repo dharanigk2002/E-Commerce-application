@@ -1,11 +1,14 @@
 import type {
   ApiError,
   AuthResponse,
-  CreateOrderPayload,
+  AddressPayload,
+  Cart,
   Order,
   OrderStatus,
   Product,
   ProductPayload,
+  RegisterPayload,
+  User,
 } from "../types";
 
 const API_BASE_URL =
@@ -23,6 +26,7 @@ type RequestOptions = {
   body?: unknown;
   method?: "GET" | "POST" | "PUT" | "DELETE";
   headers?: HeadersInit;
+  signal?: AbortSignal;
 };
 
 export class ApiClientError extends Error {
@@ -59,6 +63,7 @@ async function request<T>(
         : options.body
           ? JSON.stringify(options.body)
           : undefined,
+    signal: options.signal,
   });
 
   if (!response.ok) {
@@ -84,8 +89,31 @@ export const api = {
     });
   },
 
+  register(payload: RegisterPayload) {
+    return request<AuthResponse>("/api/auth/register", {
+      method: "POST",
+      body: payload,
+    });
+  },
+
+  getCurrentUser(token: string) {
+    return request<User>("/api/users/me", { token });
+  },
+
+  updateMyAddress(token: string, payload: AddressPayload) {
+    return request<User>("/api/users/me/address", {
+      method: "PUT",
+      token,
+      body: payload,
+    });
+  },
+
   getProducts() {
     return request<Product[]>("/api/products");
+  },
+
+  getProductById(productId: number) {
+    return request<Product>(`/api/products/${productId}`);
   },
 
   createProduct(token: string, payload: ProductPayload) {
@@ -122,16 +150,57 @@ export const api = {
     });
   },
 
-  getAdminOrders(token: string) {
-    return request<Order[]>("/api/admin/orders", { token });
+  getCart(token: string) {
+    return request<Cart>("/api/cart", { token });
   },
 
-  createOrder(token: string, payload: CreateOrderPayload) {
+  addCartItem(token: string, productId: number, quantity: number) {
+    return request<Cart>("/api/cart/items", {
+      method: "POST",
+      token,
+      body: { productId, quantity },
+    });
+  },
+
+  updateCartItem(token: string, itemId: number, quantity: number) {
+    return request<Cart>(`/api/cart/items/${itemId}`, {
+      method: "PUT",
+      token,
+      body: { quantity },
+    });
+  },
+
+  removeCartItem(token: string, itemId: number) {
+    return request<void>(`/api/cart/items/${itemId}`, {
+      method: "DELETE",
+      token,
+    });
+  },
+
+  clearCart(token: string) {
+    return request<void>("/api/cart", {
+      method: "DELETE",
+      token,
+    });
+  },
+
+  getAdminOrders(token: string, signal?: AbortSignal) {
+    return request<Order[]>("/api/admin/orders", { token, signal });
+  },
+
+  createOrder(token: string) {
     return request<Order>("/api/orders", {
       method: "POST",
       token,
-      body: payload,
     });
+  },
+
+  getCurrentUserOrders(token: string) {
+    return request<Order[]>("/api/orders", { token });
+  },
+
+  getCurrentUserOrder(token: string, orderId: number) {
+    return request<Order>(`/api/orders/${orderId}`, { token });
   },
 
   updateOrderStatus(token: string, orderId: number, status: OrderStatus) {

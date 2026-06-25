@@ -1,0 +1,165 @@
+.hero {
+  align-items: end;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.hero h1,
+.hero p,
+.card h2,
+.card h3,
+.card p {
+  margin: 0;
+}
+
+.hero h1 {
+  font-size: 36px;
+  line-height: 1.05;
+}
+
+.hero p,
+.card p,
+.meta,
+.addressText {
+  color: #60727c;
+}
+
+.productGrid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #dde4e8;
+  border-radius: 8px;
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+}
+
+.cardLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.productImage,
+.detailImage {
+  align-items: center;
+  background: #edf3f5;
+  border-radius: 8px;
+  color: #79909a;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.productImage {
+  aspect-ratio: 4 / 3;
+}
+
+.detailImage {
+  aspect-ratio: 1;
+}
+
+.productImage img,
+.detailImage img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.meta {
+  font-size: 14px;
+}
+
+.price {
+  color: #0f766e;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.detailLayout,
+.twoColumn {
+  align-items: start;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) 380px;
+}
+
+.quantityRow,
+.itemRow,
+.summaryRow,
+.orderRow {
+  align-items: center;
+  display: grid;
+  gap: 14px;
+}
+
+.quantityRow {
+  grid-template-columns: 120px 1fr;
+}
+
+.itemRow {
+  border-bottom: 1px solid #e5ecef;
+  grid-template-columns: minmax(0, 1fr) 120px 110px auto;
+  padding: 14px 0;
+}
+
+.summaryRow {
+  grid-template-columns: 1fr auto;
+}
+
+.orderRow {
+  border: 1px solid #e5ecef;
+  border-radius: 8px;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  padding: 14px;
+}
+
+.formGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.addressBox {
+  background: #f7fafb;
+  border: 1px solid #e5ecef;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.addressText {
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+.stock {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: hsl(132, 91%, 47%);
+}
+
+@media (max-width: 860px) {
+  .hero,
+  .detailLayout,
+  .twoColumn {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .itemRow,
+  .orderRow,
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}

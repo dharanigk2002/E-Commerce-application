@@ -1,0 +1,74 @@
+.customerShell {
+  min-height: 100vh;
+}
+
+.topbar {
+  align-items: center;
+  background: #ffffff;
+  border-bottom: 1px solid #dde4e8;
+  display: flex;
+  gap: 22px;
+  justify-content: space-between;
+  padding: 14px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand,
+.nav a,
+.actions a {
+  text-decoration: none;
+}
+
+.brand {
+  align-items: center;
+  color: #0f766e;
+  display: inline-flex;
+  gap: 10px;
+}
+
+.nav {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.nav a {
+  align-items: center;
+  border-radius: 6px;
+  color: #344852;
+  display: inline-flex;
+  font-weight: 800;
+  gap: 6px;
+  padding: 8px 10px;
+}
+
+.nav a[class~="active"] {
+  background: #e4f2ef;
+  color: #0f766e;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.customerMain {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 32px;
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 14px 18px;
+  }
+
+  .customerMain {
+    padding: 20px 18px;
+  }
+}
